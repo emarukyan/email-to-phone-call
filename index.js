@@ -1,6 +1,7 @@
 const config = require('./config')
 const MailListener = require('./MailListener')
 const phoneCall = require('./phone-call')
+const http = require('http')
 
 const mailListener = new MailListener(Object.assign({
   markSeen: false,
@@ -38,3 +39,24 @@ mailListener.on('mail:parsed', function (mail) {
     })
   }
 })
+
+// If deployed on Heroku start a dummy server just to listen a port
+// So that heroku app does not fail
+if (config.herokuServer) {
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' })
+    res.end('okay')
+  })
+
+  const onListening = () => {
+    const addr = server.address()
+    const bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port
+    console.log('\n', 'Listening on port: ' + bind, '\n')
+  }
+
+  server.listen(process.env.PORT || 5000)
+  server.on('error', console.error)
+  server.on('listening', onListening)
+}

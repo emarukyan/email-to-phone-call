@@ -16,5 +16,6 @@ module.exports = {
     phoneNumber: process.env.E2S_TWILIO_PHONE_NUMBER,
     accountSid: process.env.E2S_TWILIO_ACCOUNT_SID,
     authToken: process.env.E2S_TWILIO_AUTH_TOKEN
-  }
+  },
+  herokuServer: process.env.E2S_HEROKU_DEPLOY
 }
