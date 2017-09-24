@@ -18,7 +18,7 @@ E2S_SMS_TRANSFORM=./exampleSms.js <path to text extraction for SMS from email>
 E2S_TWILIO_ACCOUNT_SID=XXX - sid from Twilio
 E2S_TWILIO_AUTH_TOKEN=XXX Oaoth token from Twilio
 E2S_TWILIO_PHONE_NUMBER=37491000000 - Phone Number you have on Twilio
-E2S_HEROKU_DEPLOY=
+E2S_DEPLOY_DUMMY_HTTP= - set this to 'true' if you want to have a dummy http server for heorku or aws deploymeny
 ```
 
 ## Usage

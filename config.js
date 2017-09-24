@@ -17,5 +17,5 @@ module.exports = {
     accountSid: process.env.E2S_TWILIO_ACCOUNT_SID,
     authToken: process.env.E2S_TWILIO_AUTH_TOKEN
   },
-  herokuServer: process.env.E2S_HEROKU_DEPLOY
+  dummyHttpServer: process.env.E2S_DEPLOY_DUMMY_HTTP
 }

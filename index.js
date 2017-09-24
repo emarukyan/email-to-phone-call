@@ -40,9 +40,9 @@ mailListener.on('mail:parsed', function (mail) {
   }
 })
 
-// If deployed on Heroku start a dummy server just to listen a port
-// So that heroku app does not fail
-if (config.herokuServer) {
+// If deployed on Heroku or AWS start a dummy server just to listen a port
+// So that deployment will not fail
+if (config.dummyHttpServer) {
   const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' })
     res.end('okay')
