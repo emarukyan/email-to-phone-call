@@ -1,9 +1,10 @@
 const config = require('./config')
 const MailListener = require('./MailListener')
-const sms = require('./sms')
+const phoneCall = require('./phone-call')
+// const sms = require('./sms')
 
 const mailListener = new MailListener(Object.assign({
-  markSeen: true
+  markSeen: false
 }, config.email))
 
 mailListener.start()
@@ -15,18 +16,26 @@ mailListener.on('server:connected', function () {
 })
 
 mailListener.on('mail:arrived', function (id) {
-  console.log('new mail arrived with id:' + id)
+  console.log('New mail arrived with id:' + id)
 })
 
 mailListener.on('mail:parsed', function (mail) {
+  console.log('Subject ' + mail.headers.get('subject'))
   const needSend = config.filter(mail)
 
-  console.log('email parsed with id:', mail.uid)
+  // console.log('Email parsed with id:', mail.uid)
 
   if (needSend) {
-    console.log('email sending to')
-    sms.send({ To: config.phoneNumber, Content: config.getText(mail) })
+    console.log('Sending!')
+    const mailText = config.getText(mail)
+    /* sms.send({ To: config.phoneNumber, Content: mailText })
           .then(() => console.log('SMS is sent!'))
-          .catch(console.error.bind(console))
+          .catch(console.error.bind(console)) */
+    phoneCall(mailText, function (err, call) {
+      if (err) {
+        return console.log(err)
+      }
+      console.log('Phone call done!: ' + call.sid)
+    })
   }
 })

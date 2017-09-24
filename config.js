@@ -11,8 +11,9 @@ module.exports = {
   },
   filter: require(process.env.E2S_EMAIL_FILTER_PATH),
   getText: require(process.env.E2S_SMS_TRANSFORM),
+  phoneNumber: process.env.E2S_PHONE_NUMBER,
   twilio: {
-    phoneNumber: process.env.E2S_TWILIO_CALL_NUMBER,
+    phoneNumber: process.env.E2S_TWILIO_PHONE_NUMBER,
     accountSid: process.env.E2S_TWILIO_ACCOUNT_SID,
     authToken: process.env.E2S_TWILIO_AUTH_TOKEN
   }
