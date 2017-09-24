@@ -9,7 +9,9 @@ const txml = require('./Call-TwiML.js')
 
 module.exports = (message, cb) => {
   client.calls.create({
-    url: 'https://demo.twilio.com/docs/voice.xml',
+    url: 'http://demo.twilio.com/docs/voice.xml',
+    sendDigits: '1234#',
+    method: 'GET',
     to: config.phoneNumber,
     from: config.twilio.phoneNumber
   }, cb)
