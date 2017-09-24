@@ -5,7 +5,6 @@ const config = require('./config')
 const accountSid = config.twilio.accountSid
 const authToken = config.twilio.authToken
 const client = require('twilio')(accountSid, authToken)
-const txml = require('./Call-TwiML.js')
 
 module.exports = (message, cb) => {
   client.calls.create({
