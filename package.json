@@ -1,7 +1,7 @@
 {
-  "name": "email-to-sms",
+  "name": "email-to-phone-call",
   "version": "0.0.1",
-  "description": "send SMS based on filtered emails",
+  "description": "Call on a phone based on filtered emails",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

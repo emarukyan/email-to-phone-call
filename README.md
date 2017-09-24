@@ -1,6 +1,6 @@
-# email-to-sms
-Actually this is EMAIL TO PHONE CALL
-via Twilio service
+# email-to-phone-call
+Actually this is EMAIL TO PHONE CALL via Twilio service
+originally taken from https://github.com/mike1808/email-to-sms
 
 ## Options
 
