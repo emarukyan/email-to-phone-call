@@ -13,6 +13,7 @@
     "clockwork": "^0.1.4",
     "dotenv": "^4.0.0",
     "imap": "^0.8.19",
-    "mailparser": "^2.0.5"
+    "mailparser": "^2.0.5",
+    "twilio": "^3.6.7"
   }
 }
