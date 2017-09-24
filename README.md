@@ -1,6 +1,7 @@
 # email-to-phone-call
-Actually this is EMAIL TO PHONE CALL via Twilio service
-originally taken from https://github.com/mike1808/email-to-sms
+This is EMAIL TO PHONE CALL via Twilio service, originally taken from https://github.com/mike1808/email-to-sms
+
+It does not read email contents, it just makes a call, useful for nigh alerts.
 
 ## Options
 
