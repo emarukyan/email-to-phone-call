@@ -2,6 +2,7 @@ const config = require('./config')
 const MailListener = require('./MailListener')
 const phoneCall = require('./phone-call')
 const http = require('http')
+const https = require('https')
 
 const mailListener = new MailListener(Object.assign({
   markSeen: false,
@@ -44,7 +45,7 @@ mailListener.on('mail:parsed', function (mail) {
 // So that deployment will not fail
 if (config.dummyHttpServer === 'true') {
   const dummyRequester = () => {
-    http.get(config.selfURL, (res) => {
+    https.get(config.selfURL, (res) => {
       const { statusCode } = res
       const contentType = res.headers['content-type']
 
