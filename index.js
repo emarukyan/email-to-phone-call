@@ -43,6 +43,19 @@ mailListener.on('mail:parsed', function (mail) {
 // If deployed on Heroku or AWS start a dummy server just to listen a port
 // So that deployment will not fail
 if (config.dummyHttpServer === 'true') {
+  const dummyRequester = () => {
+    http.get(config.selfURL, (res) => {
+      const { statusCode } = res
+      const contentType = res.headers['content-type']
+
+      res.setEncoding('utf8')
+      res.on('data', (chunk) => { })
+      res.on('end', () => {})
+    }).on('error', (e) => {
+      console.error(`Got error: ${e.message}`)
+    })
+  }
+
   const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' })
     res.end('okay')
@@ -59,4 +72,7 @@ if (config.dummyHttpServer === 'true') {
   server.listen(process.env.PORT || 5000)
   server.on('error', console.error)
   server.on('listening', onListening)
+
+  // make dummy calls to me, so that heroku does not shut down server
+  setInterval(dummyRequester, 60000)
 }
