@@ -7,11 +7,18 @@ const authToken = config.twilio.authToken
 const client = require('twilio')(accountSid, authToken)
 
 module.exports = (message, cb) => {
-  client.calls.create({
-    url: 'http://demo.twilio.com/docs/voice.xml',
-    sendDigits: '1234#',
-    method: 'GET',
-    to: config.phoneNumber,
-    from: config.twilio.phoneNumber
-  }, cb)
+  const numbers = []
+  const confNumb = config.phoneNumber
+  numbers.push(confNumb.includes(',') ? confNumb.split(',') : confNumb)
+
+  numbers.map(number => {
+    console.log(`Calling to ${number}`)
+    client.calls.create({
+      url: 'http://demo.twilio.com/docs/voice.xml',
+      sendDigits: '1234#',
+      method: 'GET',
+      to: number,
+      from: config.twilio.phoneNumber
+    }, cb)
+  })
 }
