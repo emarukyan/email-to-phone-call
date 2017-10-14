@@ -9,7 +9,7 @@ const client = require('twilio')(accountSid, authToken)
 module.exports = (message, cb) => {
   const numbers = []
   const confNumb = config.phoneNumber
-  numbers.push(confNumb.includes(',') ? confNumb.split(',') : confNumb)
+  numbers.push(confNumb.indexOf(',') !== -1 ? confNumb.split(',') : confNumb)
 
   numbers.map(number => {
     console.log(`Calling to ${number}`)
