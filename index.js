@@ -4,8 +4,11 @@ const phoneCall = require('./phone-call')
 const http = require('http')
 const https = require('https')
 
+// 20 minutes
+const oldTresholdMinutes = 20 * 60 * 1000
+
 const mailListener = new MailListener(Object.assign({
-  markSeen: false,
+  markSeen: true,
   fetchUnreadOnStart: false
 }, config.email))
 
@@ -24,9 +27,6 @@ mailListener.on('mail:arrived', function (id) {
 mailListener.on('mail:parsed', function (mail) {
   const subject = mail.headers.get('subject')
   const mailDate = new Date(mail.headers.get('date'))
-
-  // on hour
-  const oldTresholdMinutes = 60 * 60 * 1000
 
   // skip old email.
   if (Date.now() - mailDate > oldTresholdMinutes) {
