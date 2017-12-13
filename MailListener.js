@@ -66,7 +66,7 @@ class MailListener extends EventEmitter {
   _parseUnreadEmails () {
     const yesterday = formatDate(new Date(Date.now() - 1000 * 60 * 60 * 24))
     console.log(`_parseUnreadEmails: ${yesterday}`)
-    return this.imap.search(['UNSEEN', ['SINCE', yesterday]], (err, searchResults) => {
+    return this.imap.search([['SINCE', yesterday]], (err, searchResults) => {
       if (err) {
         console.log(err)
         return this.emit('error', err)
