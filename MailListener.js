@@ -64,59 +64,62 @@ class MailListener extends EventEmitter {
   }
 
   _parseUnreadEmails () {
+    console.log('_parseUnreadEmails')
     return this.imap.search(['UNSEEN', ['SINCE', formatDate(new Date()) ]], (err, searchResults) => {
       if (err) {
+        console.log(err)
         return this.emit('error', err)
-      } else {
-        if (Array.isArray(searchResults) && searchResults.length === 0) {
-          return
-        }
-
-        const fetch = this.imap.fetch(searchResults, {
-          bodies: '',
-          markSeen: this.markSeen ? true : undefined
-        })
-
-        return fetch.on('message', (msg, id) => {
-          const parser = new MailParser()
-          const email = {}
-
-          parser.on('error', (err) => {
-            this.emit('error', err)
-          })
-
-          parser.on('headers', headers => {
-            email.headers = headers
-          })
-
-          parser.on('data', data => {
-            if (data.type === 'text') {
-              email.data = data
-              email.data.uid = id
-              this.emit('mail:parsed', email)
-            } else if (data.type === 'attachment') {
-                            // TODO handle stream
-              data.release()
-            }
-          })
-
-          msg.on('body', function (stream, info) {
-            let buffer = ''
-
-            stream.on('data', function (chunk) {
-              return buffer += chunk
-            })
-
-            return stream.once('end', function () {
-              return parser.write(buffer)
-            })
-          })
-
-          return msg.on('end', function () {
-            return parser.end()
-          })
-        })
       }
+      
+      if (Array.isArray(searchResults) && searchResults.length === 0) {
+        console.log('No search results.')
+        return
+      }
+
+      const fetch = this.imap.fetch(searchResults, {
+        bodies: '',
+        markSeen: this.markSeen ? true : undefined
+      })
+
+      return fetch.on('message', (msg, id) => {
+        const parser = new MailParser()
+        const email = {}
+
+        parser.on('error', (err) => {
+          this.emit('error', err)
+        })
+
+        parser.on('headers', headers => {
+          email.headers = headers
+        })
+
+        parser.on('data', data => {
+          if (data.type === 'text') {
+            email.data = data
+            email.data.uid = id
+            this.emit('mail:parsed', email)
+          } else if (data.type === 'attachment') {
+            // TODO handle stream
+            data.release()
+          }
+        })
+
+        msg.on('body', function (stream, info) {
+          let buffer = ''
+
+          stream.on('data', function (chunk) {
+            return buffer += chunk
+          })
+
+          return stream.once('end', function () {
+            return parser.write(buffer)
+          })
+        })
+
+        return msg.on('end', function () {
+          return parser.end()
+        })
+      })
     })
   };
 }
