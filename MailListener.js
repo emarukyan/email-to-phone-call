@@ -2,6 +2,21 @@ const EventEmitter = require('events').EventEmitter
 const MailParser = require('mailparser').MailParser
 const Imap = require('imap')
 
+const formatDate = (date) => {
+  const monthNames = [
+    "Jan", "Feb", "Mar",
+    "Apr", "May", "Jun", "Jul",
+    "Aug", "Sep", "Oct",
+    "Nov", "Dec"
+  ]
+
+  const day = date.getDate()
+  const monthIndex = date.getMonth()
+  const year = date.getFullYear()
+
+  return day + ' ' + monthNames[monthIndex] + ', ' + year
+}
+
 class MailListener extends EventEmitter {
   constructor (options) {
     super(options)
@@ -49,7 +64,7 @@ class MailListener extends EventEmitter {
   }
 
   _parseUnreadEmails () {
-    return this.imap.search(['UNSEEN'], (err, searchResults) => {
+    return this.imap.search(['UNSEEN', ['SINCE', formatDate(new Date()) ]], (err, searchResults) => {
       if (err) {
         return this.emit('error', err)
       } else {
