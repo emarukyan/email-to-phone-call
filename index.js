@@ -6,7 +6,7 @@ const https = require('https')
 
 const mailListener = new MailListener(Object.assign({
   markSeen: false,
-  fetchUnreadOnStart: true
+  fetchUnreadOnStart: false
 }, config.email))
 
 mailListener.start()
@@ -23,7 +23,17 @@ mailListener.on('mail:arrived', function (id) {
 
 mailListener.on('mail:parsed', function (mail) {
   const subject = mail.headers.get('subject')
-  console.log(`Subject ${subject}`)
+  const mailDate = new Date(mail.headers.get('date'))
+
+  // on hour
+  const oldTresholdMinutes = 60 * 60 * 1000
+
+  // skip old email.
+  if (Date.now() - mailDate > oldTresholdMinutes) {
+    return
+  }
+
+  console.log(`Subject ${subject} - ${mailDate}`)
   const needSend = config.filter(mail)
 
   // console.log('Email parsed with id:', mail.uid)
