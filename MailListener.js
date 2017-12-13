@@ -73,7 +73,7 @@ class MailListener extends EventEmitter {
         return
       }
 
-      const recentEmail = searchResults[0]
+      const recentEmail = searchResults[searchResults.length - 1]
       console.log(recentEmail)
 
       const fetch = this.imap.fetch(recentEmail, {
