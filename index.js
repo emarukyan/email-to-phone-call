@@ -8,23 +8,22 @@ const https = require('https')
 const oldTresholdMinutes = 20 * 60 * 1000
 
 const mailListener = new MailListener(Object.assign({
-  markSeen: true,
-  fetchUnreadOnStart: false
+  markSeen: true
 }, config.email))
 
 mailListener.start()
 
 mailListener.on('error', console.error.bind(console))
 
-mailListener.on('server:connected', function () {
+mailListener.on('server:connected', () => {
   console.log('imapConnected')
 })
 
-mailListener.on('mail:arrived', function (id) {
-  console.log('New mail arrived with id:' + id)
+mailListener.on('mail:arrived', () => {
+  console.log('New mail arrived.')
 })
 
-mailListener.on('mail:parsed', function (mail) {
+mailListener.on('mail:parsed', (mail) => {
   const subject = mail.headers.get('subject')
   const mailDate = new Date(mail.headers.get('date'))
 

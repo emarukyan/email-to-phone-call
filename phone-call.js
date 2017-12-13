@@ -16,7 +16,7 @@ module.exports = (message, cb) => {
   }
 
   numbers.map(number => {
-    return console.log(`Calling to ${number}`)
+    console.log(`Calling to ${number}`)
     client.calls.create({
       url: 'http://demo.twilio.com/docs/voice.xml',
       sendDigits: '1234#',

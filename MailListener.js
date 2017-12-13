@@ -21,7 +21,6 @@ class MailListener extends EventEmitter {
   constructor (options) {
     super(options)
 
-    this.fetchUnreadOnStart = options.fetchUnreadOnStart
     this.markSeen = options.markSeen
     this.imap = new Imap({
       user: options.user,
@@ -43,11 +42,8 @@ class MailListener extends EventEmitter {
           if (err) {
             return this.emit('error', err)
           } else {
-            if (this.fetchUnreadOnStart) {
-              this._parseUnreadEmails()
-            }
             return this.imap.on('mail', (id) => {
-              this.emit('mail:arrived', id)
+              this.emit('mail:arrived')
               return this._parseUnreadEmails()
             })
           }
@@ -64,9 +60,9 @@ class MailListener extends EventEmitter {
   }
 
   _parseUnreadEmails () {
-    const yesterday = formatDate(new Date(Date.now() - 1000 * 60 * 60 * 24))
-    console.log(`_parseUnreadEmails: ${yesterday}`)
-    return this.imap.search([['SINCE', yesterday]], (err, searchResults) => {
+    console.log(`_parseUnreadEmails`)
+    const last3Minutes = new Date(Date.now() - 1000 * 60 * 3)
+    return this.imap.search([['SINCE', last3Minutes ]], (err, searchResults) => {
       if (err) {
         console.log(err)
         return this.emit('error', err)
@@ -77,7 +73,10 @@ class MailListener extends EventEmitter {
         return
       }
 
-      const fetch = this.imap.fetch(searchResults, {
+      const recentEmail = searchResults[0]
+      console.log(recentEmail)
+
+      const fetch = this.imap.fetch(recentEmail, {
         bodies: '',
         markSeen: this.markSeen ? true : undefined
       })
