@@ -6,7 +6,7 @@ const https = require('https')
 
 const mailListener = new MailListener(Object.assign({
   markSeen: false,
-  fetchUnreadOnStart: false
+  fetchUnreadOnStart: true
 }, config.email))
 
 mailListener.start()
